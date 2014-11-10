@@ -130,7 +130,7 @@
 					success: function(data) {
 						console.log(data);
 						var result = $("#result");
-						result.val(data["answer"] + "\n" + result.val());
+						result.val(data["expression"] + " = " + data["answer"] + "\n" + result.val());
 					},
 					error: function(xOptions, textStatus) {
 						alert("Connection error");
