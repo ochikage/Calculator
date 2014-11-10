@@ -1,0 +1,25 @@
+{
+	"reg" : {
+		"ops" : "[-+*/()]", 
+		"space_head" : "^ +",
+		"space_tail" : " +$"	
+	},
+	"op" : {
+		"/" : {
+			"priority" : 20,
+			"code" : "p2 / p1"
+		},
+		"*" : {
+			"priority" : 20,
+			"code" : "p2 * p1"
+		},
+		"+" : {
+			"priority" : 10,
+			"code" : "p2 + p1"
+		},
+		"-" : {
+			"priority" : 10,
+			"code" : "p2 - p1"
+		}
+	}
+}
