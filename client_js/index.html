@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Calculator Client</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<style type="text/css">
+		textarea#result {
+			width: 100%;
+		}
+		input[name="expression"]{
+			width: 95%;
+		}
+		button#submit {
+			width: 100%;
+		}
+
+		.popover {
+			max-width: 500px;
+		}
+
+	</style>
+  </head>
+  <body>
+	<!-- Navbar -->
+	<nav class="navbar default navbar-inverse " role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<div class="navbar-brand"><a href="#">Simple Calculator Client</a></div>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><button type="button" class="btn btn-default btn-lg" id="setting_btn"><span class="glyphicon glyphicon-cog"></button></li>
+			</ul>
+		</div><!-- /.container-fluid -->
+	</nav>
+
+	<!-- Setting dialog -->
+	<div class="modal fade" id="setting_dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">Setting</h4>
+				</div>
+				<div class="modal-body">
+					<label for="hostname">Host name:</label>
+					<input type="text" name="hostname" id="hostname"/>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" id="setting_save">Save</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Main contents -->
+	<div class="container main-content">
+		<div class="row">
+			<div class="col-md-2 sidebar"></div>
+			<div class="col-md-8 content-area">
+				<div style="float:left; width:95%"><input type="text" name="expression" data-toggle="popover" title="Input expresion here (e.g. (10.5+7) *-2 / 3)" data-content="Supported operations are +, -, *, /, (, )"/></div>
+				<div style="float:right; width:5%"><button id="submit">=</button></div>
+				<div style="both:clear"><textarea id="result" rows="10"></textarea></div>
+			</div>
+			<div class="col-md-2 sidebar"></div>
+		</div><!-- /.row -->
+	</div><!-- /.container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script src="jquery/jquery.jsonp.js"></script> <!-- to support JSONP -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+	<script>
+		$(function(){
+			//
+			// Show setting dialog
+			//
+			$("#setting_btn").click(function(){
+				$("#hostname").val(localStorage["hostname"]);
+				$("#setting_dialog").modal('show');
+			});
+
+			//
+			// Save setting
+			//
+			$("#setting_save").click(function(){
+				localStorage.setItem("hostname", $("#hostname").val());
+			});
+
+			//
+			// Submit the expression
+			//
+			var submit_expression = function() {
+				//
+				// Call the API by JSONP
+				//
+				var url = localStorage["hostname"] + '/calc?callback=?';
+
+				//
+				// getJSON cannot handle .error callback when JSONP is used.
+				//
+				//$.getJSON(url , {'expression': $("input[name='expression']").val()}, function(data, status) {
+				//	console.log(status);
+				//	console.log(data);
+				//	if (status == "success") { 
+				//		var result = $("#result");
+				//		result.val(data["answer"] + "\n" + result.val());
+				//	} else {
+				//		alert('Cannot access the server');
+				//	}
+				//});
+
+				$.jsonp({
+					url: url,
+					data: {'expression': $("input[name='expression']").val()},
+					success: function(data) {
+						console.log(data);
+						var result = $("#result");
+						result.val(data["answer"] + "\n" + result.val());
+					},
+					error: function(xOptions, textStatus) {
+						alert("Connection error");
+					}
+				});
+			};
+
+			//
+			// Enter is pressed in the text box
+			//
+			$("input[name='expression']").keypress(function(e){
+				if (e.which == 13) {
+					submit_expression();
+					return false;
+				}
+			});
+
+			//
+			// Submit 
+			//
+			$("#submit").click(function(){
+				submit_expression();
+			});
+
+			//
+			// misc
+			//
+			$("input[name='expression']").popover({trigger: 'hover',placement: 'bottom',});
+		});
+	</script>
+  </body>
+</html>
