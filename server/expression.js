@@ -1,4 +1,4 @@
-var op_setting = require("./op_setting.json");
+var operators = require("./operators.json");
 var Calculator = require("./calculator");
 var Converter = require("./converter");
 
@@ -49,8 +49,8 @@ Expression.prototype = {
 	},
 	get_support_operations: function() {
 		var ret = "{";
-		for (key in op_setting.op) {
-			ret += "\"" + key + "\":{params:" + op_setting.op[key].params + "},";
+		for (key in operators) {
+			ret += "\"" + key + "\":{params:" + operators[key].params + "},";
 		}
 		ret += "}";
 

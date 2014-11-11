@@ -1,4 +1,4 @@
-var op_setting = require("./op_setting.json");
+var operators = require("./operators.json");
 
 var Calculator = function(expression) {
 	this.expression = expression;
@@ -27,15 +27,15 @@ Calculator.prototype = {
 			var element = elements[i];
 
 			if (isNaN(element)) {
-				if (op_setting.op[element] !== undefined) {
+				if (operators[element] !== undefined) {
 					//
 					// isNaN check is not required here because it is guaranteed that
 					// only numbers are pushed.
 					//
 					var p1 = 0, p2 = 0;
-					if (op_setting.op[element].params == 1) {
+					if (operators[element].params == 1) {
 						p1 = Number(stack.pop());
-					} else if (op_setting.op[element].params == 2) {
+					} else if (operators[element].params == 2) {
 						p1 = Number(stack.pop());
 						p2 = Number(stack.pop());
 					}
@@ -48,7 +48,7 @@ Calculator.prototype = {
 						return;
 					}
 
-					stack.push(eval(op_setting.op[element].code));
+					stack.push(eval(operators[element].code));
 				} else {
 					this.expression.error = this.expression.ERROR_TYPE["NON_SUPPORT_OP"];	
 					return;

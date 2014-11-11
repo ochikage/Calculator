@@ -1,4 +1,4 @@
-var op_setting = require("./op_setting.json");
+var operators = require("./operators.json");
 
 var Converter = function(expression) {
 	this.expression = expression;
@@ -14,7 +14,7 @@ Converter.prototype = {
 		// If 2 numbers appear side by side, user might input it as RPN.
 		// Set invalid operator and calculator will occurs syntax error.
 		//
-		if (exp.infix_string.search(new RegExp(op_setting.reg.error)) != -1) {
+		if (exp.infix_string.search(/[0-9]+ +[0-9]+/) != -1) {
 			exp.error = exp.ERROR_TYPE["SYNTAX_ERROR"];
 		}
 
@@ -22,7 +22,7 @@ Converter.prototype = {
 		// Add space around operators and parens, then split the expression by space
 		//
 		var reg_ops = "(";
-		for (key in op_setting.op) {
+		for (key in operators) {
 			if (key.match(/[.^$[\]*+?|]/)) key = "\\" + key;
 			reg_ops += key + "|";
 		}
@@ -68,7 +68,7 @@ Converter.prototype = {
 		//
 		// Calculator will handle non supported operator error
 		//
-		if (op_setting.op[element] === undefined) {
+		if (operators[element] === undefined) {
 			this.postfix_elements.push(element);
 			return;
 		}
@@ -87,7 +87,7 @@ Converter.prototype = {
 			// If the priority of the op in stack is higher than that of current one
 			// the stack is poped.
 			//
-			if (op_setting.op[stack_top].priority >= op_setting.op[element].priority) {
+			if (operators[stack_top].priority >= operators[element].priority) {
 				this.postfix_elements.push(stack_top);
 				this.stack.pop();
 			} else {
