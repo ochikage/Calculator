@@ -57,7 +57,7 @@
 				<div class="modal-body">
 					<label for="hostname">Host name:</label>
 					<input type="text" name="hostname"/><br/>
-					<label for="rpn_mode">Use Reverse Polish Notation:</label>
+					<label for="rpn_mode">Use Postfix (Reverse Polish) Notation:</label>
 					<input type="checkbox" name="rpn_mode"/>
 				</div>
 				<div class="modal-footer">
@@ -73,9 +73,10 @@
 		<div class="row">
 			<div class="col-md-2 sidebar"></div>
 			<div class="col-md-8 content-area">
-				<div style="float:left; width:95%"><input type="text" name="expression" data-toggle="popover" title="Input expresion here (e.g. (10.5+7) *-2 / 3)" data-content="Supported operations are +, -, *, /, (, )"/></div>
+				<div style="float:left; width:95%"><input type="text" name="expression" data-toggle="popover" title="Input expresion here " data-content="e.g. <br/> Infix:(10.5+7) *-2 / 3 <br/> Postfix:10.5 7 + -2 * 3 /"/></div>
 				<div style="float:right; width:5%"><button id="submit">=</button></div>
 				<div style="both:clear"><textarea id="result" rows="10"></textarea></div>
+				<div id="support_op_list"></div>
 			</div>
 			<div class="col-md-2 sidebar"></div>
 		</div><!-- /.row -->

@@ -1,4 +1,4 @@
-var config = require("./op_setting.json");
+var op_setting = require("./op_setting.json");
 
 var Converter = function(expression) {
 	this.expression = expression;
@@ -14,14 +14,14 @@ Converter.prototype = {
 		// If 2 numbers appear side by side, user might input it as RPN.
 		// Set invalid operator and calculator will occurs syntax error.
 		//
-		if (exp.infix_string.search(new RegExp(config.reg.error)) != -1) {
+		if (exp.infix_string.search(new RegExp(op_setting.reg.error)) != -1) {
 			exp.error = exp.ERROR_TYPE["SYNTAX_ERROR"];
 		}
 
 		//
 		// Add space around operators and parens, then split the expression by space
 		//
-		exp.infix_string = exp.infix_string.replace(new RegExp(config.reg.ops, "g"), " $& ").replace(new RegExp(config.reg.space_head), "").replace(new RegExp(config.reg.space_tail), "").toUpperCase();
+		exp.infix_string = exp.infix_string.replace(new RegExp(op_setting.reg.ops, "g"), " $& ").replace(new RegExp(op_setting.reg.space_head), "").replace(new RegExp(op_setting.reg.space_tail), "").toUpperCase();
 		exp.infix_elements = exp.infix_string.split(/ +/);
 
 		//
@@ -61,7 +61,7 @@ Converter.prototype = {
 		//
 		// Calculator will handle non supported operator error
 		//
-		if (config.op[element] === undefined) {
+		if (op_setting.op[element] === undefined) {
 			this.postfix_elements.push(element);
 			return;
 		}
@@ -80,7 +80,7 @@ Converter.prototype = {
 			// If the priority of the op in stack is higher than that of current one
 			// the stack is poped.
 			//
-			if (config.op[stack_top].priority >= config.op[element].priority) {
+			if (op_setting.op[stack_top].priority >= op_setting.op[element].priority) {
 				this.postfix_elements.push(stack_top);
 				this.stack.pop();
 			} else {

@@ -40,6 +40,16 @@ function calc_rpn(query, response) {
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
 
 }
+
+function support_op(query, response) {
+	var expression = new Expression();
+	var ret = expression.get_support_operations();
+
+	response.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
+	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
+}
+
 exports.start = start;
 exports.calc = calc;
 exports.calc_rpn = calc_rpn;
+exports.support_op = support_op;

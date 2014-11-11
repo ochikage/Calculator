@@ -9,11 +9,24 @@ $(function(){
 	});
 
 	//
+	// Change appearance
+	//
+	var change_expression_color = function() {
+		if (localStorage["rpn_mode"] == "true") {
+			$("input[name='expression']").css("background-color", "yellow");
+		} else {
+			$("input[name='expression']").css("background-color", "white");
+		}	
+	}; 
+	change_expression_color();
+
+	//
 	// Save setting
 	//
 	$("#setting_save").click(function(){
 		localStorage.setItem("hostname", $("input[name='hostname']").val());
 		localStorage.setItem("rpn_mode", $("input[name='rpn_mode']").prop('checked'));
+		change_expression_color();
 	});
 
 	//
@@ -78,5 +91,33 @@ $(function(){
 	//
 	// misc
 	//
-	$("input[name='expression']").popover({trigger: 'hover',placement: 'bottom',});
+	$("input[name='expression']").popover({trigger: 'hover',placement: 'bottom',html: true});
+
+	(function() {
+		var	url = localStorage["hostname"] + '/support_op?callback=?';
+		console.log(url);
+
+		$.jsonp({
+			url: url,
+			data: {},
+			success: function(data) {
+				var support_op_list = $("#support_op_list");
+				var monadics = "";
+				var dyadics = "";
+
+				for (key in data) {
+					if (data[key].params == 1) {
+						monadics += key + " ";
+					} else {
+						dyadics += key + " ";
+					}
+				}
+				support_op_list.html("<h4>Supported operations</h4><p>monadics: " + monadics + "</p>" + "<p>dyadics: " + dyadics + "</p>");
+			},
+			error: function(xOptions, textStatus) {
+				;
+			}
+		});
+	})();
+
 });

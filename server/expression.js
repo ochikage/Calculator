@@ -1,3 +1,4 @@
+var op_setting = require("./op_setting.json");
 var Calculator = require("./calculator");
 var Converter = require("./converter");
 
@@ -23,7 +24,7 @@ Expression.prototype = {
 	execute: function(expression_string){
 		this.infix_string = expression_string;
 		this.converter.execute();
-		this.calculator.execute()
+		this.calculator.execute();
 		
 		return (this.error == "") ? this.answer : this.error;
 	},
@@ -37,7 +38,8 @@ Expression.prototype = {
 	},
 	calculate: function(expression_string){
 		this.postfix_string = expression_string;
-		return this.calculator.execute();
+		this.calculator.execute();
+		return (this.error == "") ? this.answer : this.error;
 	},
 	get_infix_expression: function() {
 		return this.infix_elements.join(" ");	
@@ -45,6 +47,15 @@ Expression.prototype = {
 	get_postfix_expression: function() {
 		return this.postfix_elements.join(" ");	
 	},
+	get_support_operations: function() {
+		var ret = "{";
+		for (key in op_setting.op) {
+			ret += "\"" + key + "\":{params:" + op_setting.op[key].params + "},";
+		}
+		ret += "}";
+
+		return ret;
+	}
 }
 
 exports = module.exports = Expression;
