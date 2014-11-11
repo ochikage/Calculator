@@ -21,7 +21,14 @@ Converter.prototype = {
 		//
 		// Add space around operators and parens, then split the expression by space
 		//
-		exp.infix_string = exp.infix_string.replace(new RegExp(op_setting.reg.ops, "g"), " $& ").replace(new RegExp(op_setting.reg.space_head), "").replace(new RegExp(op_setting.reg.space_tail), "").toUpperCase();
+		var reg_ops = "(";
+		for (key in op_setting.op) {
+			if (key.match(/[.^$[\]*+?|]/)) key = "\\" + key;
+			reg_ops += key + "|";
+		}
+		reg_ops += "\\(|\\))"; // Parens are not operators but need to be detected
+
+		exp.infix_string = exp.infix_string.replace(new RegExp(reg_ops, "g"), " $& ").trim().toUpperCase();
 		exp.infix_elements = exp.infix_string.split(/ +/);
 
 		//
