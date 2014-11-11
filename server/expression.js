@@ -7,6 +7,14 @@ var Expression = function() {
 	this.infix_elements = [];
 	this.postfix_elements = [];
 
+	this.ERROR_TYPE = {
+		"SYNTAX_ERROR": "Syntax error",
+		"NON_SUPPORT_OP": "Non supported operator",
+	};
+	this.error = "";
+
+	this.answer;
+
 	this.converter = new Converter(this);
 	this.calculator = new Calculator(this);
 }
@@ -15,7 +23,9 @@ Expression.prototype = {
 	execute: function(expression_string){
 		this.infix_string = expression_string;
 		this.converter.execute();
-		return this.calculator.execute();
+		this.calculator.execute()
+		
+		return (this.error == "") ? this.answer : this.error;
 	},
 	handle_negative: function(elements) {
 		for (var i = 0; i < elements.length; i++) {

@@ -32,25 +32,32 @@ Calculator.prototype = {
 					// isNaN check is not required here because it is guaranteed that
 					// only numbers are pushed.
 					//
-					var p1 = Number(stack.pop());
-					var p2 = Number(stack.pop());
+					var p1 = 0, p2 = 0;
+					if (config.op[element].params == 1) {
+						p1 = Number(stack.pop());
+					} else if (config.op[element].params == 2) {
+						p1 = Number(stack.pop());
+						p2 = Number(stack.pop());
+					}
 
 					//
 					// If one of the paramter is NaN, the syntax has any problem.
 					//
 					if (isNaN(p1) || isNaN(p2)) {
-						return "Syntax error";
+						this.expression.error = this.expression.ERROR_TYPE["SYNTAX_ERROR"];	
+						return;
 					}
 
 					stack.push(eval(config.op[element].code));
 				} else {
-					return "Non supported operator";
+					this.expression.error = this.expression.ERROR_TYPE["NON_SUPPORT_OP"];	
+					return;
 				}
 			} else {
 				stack.push(element);
 			}
 		}
-		return stack.pop();
+		this.expression.answer = stack.pop();
 	}
 }
 

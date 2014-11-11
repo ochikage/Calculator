@@ -8,11 +8,20 @@ var Converter = function(expression) {
 
 Converter.prototype = {
 	handle_input : function () {
+		var exp = this.expression;
+
+		//
+		// If 2 numbers appear side by side, user might input it as RPN.
+		// Set invalid operator and calculator will occurs syntax error.
+		//
+		if (exp.infix_string.search(new RegExp(config.reg.error)) != -1) {
+			exp.error = exp.ERROR_TYPE["SYNTAX_ERROR"];
+		}
+
 		//
 		// Add space around operators and parens, then split the expression by space
 		//
-		var exp = this.expression;
-		exp.infix_string = exp.infix_string.replace(new RegExp(config.reg.ops, "g"), " $& ").replace(new RegExp(config.reg.space_head), "").replace(new RegExp(config.reg.space_tail), "");
+		exp.infix_string = exp.infix_string.replace(new RegExp(config.reg.ops, "g"), " $& ").replace(new RegExp(config.reg.space_head), "").replace(new RegExp(config.reg.space_tail), "").toUpperCase();
 		exp.infix_elements = exp.infix_string.split(/ +/);
 
 		//
@@ -49,16 +58,16 @@ Converter.prototype = {
 	},
 
 	parse_operator : function(element) {
+		//
+		// Calculator will handle non supported operator error
+		//
+		if (config.op[element] === undefined) {
+			this.postfix_elements.push(element);
+			return;
+		}
+
 		while (this.stack.length > 0) {
 			var stack_top = this.stack[this.stack.length - 1];
-
-			//
-			// Calculator will handle non supported operator error
-			//
-			if (config.op[element] === undefined) {
-				this.postfix_elements.push(element);
-				return;
-			}
 
 			//
 			// Operation is closed in the parens
