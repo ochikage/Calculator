@@ -1,4 +1,4 @@
-var operators = require("./operators.json");
+var Operators = require("./operators.js");
 var Calculator = require("./calculator");
 var Converter = require("./converter");
 
@@ -8,13 +8,14 @@ var Expression = function() {
 	this.infix_elements = [];
 	this.postfix_elements = [];
 
+	this.answer;
 	this.ERROR_TYPE = {
 		"SYNTAX_ERROR": "Syntax error",
 		"NON_SUPPORT_OP": "Non supported operator",
 	};
 	this.error = "";
 
-	this.answer;
+	this.operators = new Operators();
 
 	this.converter = new Converter(this);
 	this.calculator = new Calculator(this);
@@ -28,6 +29,7 @@ Expression.prototype = {
 		
 		return (this.error == "") ? this.answer : this.error;
 	},
+
 	handle_negative: function(elements) {
 		for (var i = 0; i < elements.length; i++) {
 			if (elements[i] == "-" && isNaN(elements[i - 1]) && elements[i - 1] != ")" && !isNaN(elements[i + 1])) {
@@ -36,25 +38,23 @@ Expression.prototype = {
 			}
 		}
 	},
+
 	calculate: function(expression_string){
 		this.postfix_string = expression_string;
 		this.calculator.execute();
 		return (this.error == "") ? this.answer : this.error;
 	},
+
 	get_infix_expression: function() {
 		return this.infix_elements.join(" ");	
 	},
+
 	get_postfix_expression: function() {
 		return this.postfix_elements.join(" ");	
 	},
-	get_support_operations: function() {
-		var ret = "{";
-		for (key in operators) {
-			ret += "\"" + key + "\":{params:" + operators[key].params + "},";
-		}
-		ret += "}";
 
-		return ret;
+	get_support_operations: function() {
+		return this.operators.get_support_operations();
 	}
 }
 

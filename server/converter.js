@@ -1,14 +1,14 @@
-var operators = require("./operators.json");
-
 var Converter = function(expression) {
 	this.expression = expression;
 	this.stack = [];
 	this.postfix_elements = [];
+	this.operators = expression.operators;
 }
 
 Converter.prototype = {
 	handle_input : function () {
 		var exp = this.expression;
+		var ops = this.operators;
 
 		//
 		// If 2 numbers appear side by side, user might input it as RPN.
@@ -21,12 +21,7 @@ Converter.prototype = {
 		//
 		// Add space around operators and parens, then split the expression by space
 		//
-		var reg_ops = "(";
-		for (key in operators) {
-			if (key.match(/[.^$[\]*+?|]/)) key = "\\" + key;
-			reg_ops += key + "|";
-		}
-		reg_ops += "\\(|\\))"; // Parens are not operators but need to be detected
+		var reg_ops = ops.get_reg_exp();
 
 		exp.infix_string = exp.infix_string.replace(new RegExp(reg_ops, "g"), " $& ").trim().toUpperCase();
 		exp.infix_elements = exp.infix_string.split(/ +/);
@@ -50,6 +45,10 @@ Converter.prototype = {
 
 		for (var i = 0; i < elements.length; i++) {
 			var element = elements[i];
+
+			if (element == "PI") element = Math.PI;
+			if (element == "E") element = Math.E;
+
 			if (!isNaN(element)) {
 				this.postfix_elements.push(element);
 			} else if (element == "(" || element == ")") {
@@ -65,10 +64,12 @@ Converter.prototype = {
 	},
 
 	parse_operator : function(element) {
+		var ops = this.operators;
+
 		//
 		// Calculator will handle non supported operator error
 		//
-		if (operators[element] === undefined) {
+		if (!ops.is_defined(element)) {
 			this.postfix_elements.push(element);
 			return;
 		}
@@ -87,7 +88,7 @@ Converter.prototype = {
 			// If the priority of the op in stack is higher than that of current one
 			// the stack is poped.
 			//
-			if (operators[stack_top].priority >= operators[element].priority) {
+			if (ops.is_high_priority(stack_top, element)) {
 				this.postfix_elements.push(stack_top);
 				this.stack.pop();
 			} else {

@@ -2,7 +2,7 @@ var Expression = require("./expression");
 
 function start(query, response) {
 	response.writeHead(200, {"Content-Type": "text/plain"});
-	response.write("Starts");
+	response.write("Welcome to Calculator server.");
 	response.end();
 }
 
@@ -22,9 +22,8 @@ function calc(query, response) {
 	//
 	// JSONP
 	//
-	response.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
+	response.writeHead(200, {"Content-Type": "application/javascript; charset=utf-8"});
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
-
 }
 
 function calc_rpn(query, response) {
@@ -36,7 +35,7 @@ function calc_rpn(query, response) {
 	//
 	// JSONP
 	//
-	response.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
+	response.writeHead(200, {"Content-Type": "application/javascript; charset=utf-8"});
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
 
 }

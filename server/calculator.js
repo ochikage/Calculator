@@ -1,7 +1,6 @@
-var operators = require("./operators.json");
-
 var Calculator = function(expression) {
 	this.expression = expression;
+	this.operators = expression.operators;
 }
 
 Calculator.prototype = {
@@ -21,34 +20,22 @@ Calculator.prototype = {
 
 	calculate : function() {
 		var elements = this.expression.postfix_elements;
+		var ops = this.operators;
 		var stack = [];
 
 		for (var i = 0; i < elements.length; i++) {
 			var element = elements[i];
 
 			if (isNaN(element)) {
-				if (operators[element] !== undefined) {
-					//
-					// isNaN check is not required here because it is guaranteed that
-					// only numbers are pushed.
-					//
-					var p1 = 0, p2 = 0;
-					if (operators[element].params == 1) {
-						p1 = Number(stack.pop());
-					} else if (operators[element].params == 2) {
-						p1 = Number(stack.pop());
-						p2 = Number(stack.pop());
-					}
+				if (ops.is_defined(element)) {
+					var p = [];
 
-					//
-					// If one of the paramter is NaN, the syntax has any problem.
-					//
-					if (isNaN(p1) || isNaN(p2)) {
+					if (!ops.elements[element].pop_stack(stack, p)) {
 						this.expression.error = this.expression.ERROR_TYPE["SYNTAX_ERROR"];	
 						return;
 					}
 
-					stack.push(eval(operators[element].code));
+					stack.push(ops.elements[element].run_code(p));
 				} else {
 					this.expression.error = this.expression.ERROR_TYPE["NON_SUPPORT_OP"];	
 					return;

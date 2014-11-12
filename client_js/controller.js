@@ -89,30 +89,48 @@ $(function(){
 	});
 
 	//
-	// misc
+	// popover of the input field 
 	//
 	$("input[name='expression']").popover({trigger: 'hover',placement: 'bottom',html: true});
 
+	//
+	// Show supported operators 
+	//
 	(function() {
 		var	url = localStorage["hostname"] + '/support_op?callback=?';
-		console.log(url);
 
 		$.jsonp({
 			url: url,
 			data: {},
 			success: function(data) {
-				var support_op_list = $("#support_op_list");
-				var monadics = "";
-				var dyadics = "";
+				var $list_title = $("<h4/>");
+				var $monadics_title = $("<span/>");
+				var $dyadics_title = $("<span/>");
+
+				$list_title.text("Supported operators");
+				$monadics_title.text("monadic operators: ");	
+				$dyadics_title.text("dyadics operators: ");	
+
+				var $monadics = $("<div/>");
+				var $dyadics = $("<div/>");
+
+				$monadics.append($monadics_title);
+				$dyadics.append($dyadics_title);
 
 				for (key in data) {
+					var $op = $("<a/>");
+					$op.text(key + " ");
+					$op.attr("data-toggle", "tooltip");
+					$op.attr("title", data[key].description);
+
 					if (data[key].params == 1) {
-						monadics += key + " ";
+						$monadics.append($op);
 					} else {
-						dyadics += key + " ";
+						$dyadics.append($op);
 					}
 				}
-				support_op_list.html("<h4>Supported operations</h4><p>monadics: " + monadics + "</p>" + "<p>dyadics: " + dyadics + "</p>");
+
+				$("#support_op_list").append($list_title).append($monadics).append($dyadics);
 			},
 			error: function(xOptions, textStatus) {
 				;
