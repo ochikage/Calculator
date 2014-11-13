@@ -79,6 +79,7 @@ var Operator = function() {
 	this.description = "";
 	this.hidden = false;
 	this.alternative = "";
+	this.alternative_condition = "";
 }
 Operator.prototype = {
 	constructor : function(operator) {
@@ -87,6 +88,7 @@ Operator.prototype = {
 		this.description = operator.description;
 		this.hidden = operator.hidden;
 		this.alternative = operator.alternative;
+		this.alternative_condition = operator.alternative_condition;
 	}
 }
 

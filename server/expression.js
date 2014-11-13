@@ -30,15 +30,17 @@ Expression.prototype = {
 		return (this.error == "") ? this.answer : this.error;
 	},
 
-	handle_negative: function(elements) {
+	handle_alternative: function(elements) {
 		var ops = this.operators;
+
 		for (var i = 0; i < elements.length; i++) {
-			if (elements[i] == "-") {
-				if (elements[i-1] == undefined || elements[i-1] == "(" || ops.is_dyadic(elements[i-1])) {
-					if (!isNaN(elements[i+1])  || elements[i+1] == "(" || ops.is_monadic(elements[i+1])) {
-						elements[i] = "NEG";
+			for (key in ops.elements) {
+				var alt = ops.elements[key].alternative ;
+				if (alt !== undefined && elements[i] == alt) {
+					if (eval(ops.elements[key].alternative_condition)) {
+						elements[i] = key;
 					}
-				}
+				} 
 			}
 		}
 	},

@@ -41,7 +41,8 @@
 		"code" : "-p1",
 		"description" : "Set negative value",
 		"hidden" : true,
-		"alternative" : "-"
+		"alternative" : "-",
+		"alternative_condition" : "(elements[i-1] == undefined || elements[i-1] == \"(\" || ops.is_dyadic(elements[i-1])) && (!isNaN(elements[i+1])  || elements[i+1] == \"(\" || ops.is_monadic(elements[i+1]))"
 	},
 	"ABS" : {
 		"params" : 1,

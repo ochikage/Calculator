@@ -21,7 +21,7 @@ Converter.prototype = {
 		//
 		// ['-', '5', '+', '3', '*', '-', 'SIN'] --> ['-5', '+', '3', '*', '-SIN']
 		//
-		this.expression.handle_negative(exp.infix_elements);
+		this.expression.handle_alternative(exp.infix_elements);
 		console.log(exp.infix_elements)
 	},
 
