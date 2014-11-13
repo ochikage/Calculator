@@ -55,6 +55,9 @@ Operators.prototype = {
 		var ret = "{";
 
 		for (key in elements) {
+			//
+			/// Hidden operator should be hidden
+			//
 			if (!elements[key].hidden) { 
 				var params = (elements[key] instanceof Monadics) ? 1 : 2;
 				ret += "\"" + key + "\":{params:" + params + ", description:\"" + elements[key].description + "\"},";

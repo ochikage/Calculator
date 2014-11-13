@@ -69,6 +69,9 @@ Expression.prototype = {
 		return this.infix_elements.join(" ");	
 	},
 
+	//
+	// e.g. 'NEG' --> '-'
+	//
 	get_formatted_infix_expression: function() {
 		var ops = this.operators;
 		var infix = this.infix_elements.join(" ");
