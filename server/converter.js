@@ -11,14 +11,6 @@ Converter.prototype = {
 		var ops = this.operators;
 
 		//
-		// If 2 numbers appear side by side, user might input it as RPN.
-		// Set invalid operator and calculator will occurs syntax error.
-		//
-		if (exp.infix_string.search(/[0-9]+ +[0-9]+/) != -1) {
-			exp.error = exp.ERROR_TYPE["SYNTAX_ERROR"];
-		}
-
-		//
 		// Add space around operators and parens, then split the expression by space
 		//
 		var reg_ops = ops.get_reg_exp();
@@ -27,9 +19,10 @@ Converter.prototype = {
 		exp.infix_elements = exp.infix_string.split(/ +/);
 
 		//
-		// ['-', '5', '+', '3'] --> ['-5', '+', '3']
+		// ['-', '5', '+', '3', '*', '-', 'SIN'] --> ['-5', '+', '3', '*', '-SIN']
 		//
 		this.expression.handle_negative(exp.infix_elements);
+		console.log(exp.infix_elements)
 	},
 
 	execute : function () {
@@ -61,6 +54,8 @@ Converter.prototype = {
 		while (this.stack.length > 0) {
 			this.postfix_elements.push(this.stack.pop());
 		}
+
+		this.expression.check_infix_syntax_error();	
 	},
 
 	parse_operator : function(element) {

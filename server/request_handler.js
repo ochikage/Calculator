@@ -9,7 +9,8 @@ function start(query, response) {
 function calc(query, response) {
 	var expression = new Expression();
 	var answer = expression.execute(query["expression"]);
-	var expression_infix = expression.get_infix_expression();
+	//var expression_infix = expression.get_infix_expression();
+	var expression_infix = expression.get_formatted_infix_expression();
 	var ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_infix + "\"}";
 
 	//

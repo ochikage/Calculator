@@ -9,7 +9,7 @@ Calculator.prototype = {
 		// Space is recognized as a delimiter. 
 		//
 		var exp = this.expression;
-		exp.postfix_elements = exp.postfix_string.split(/ +/);
+		exp.postfix_elements = exp.postfix_string.toUpperCase().split(/ +/);
 		console.log(exp.postfix_elements);
 	},	
 
@@ -45,6 +45,10 @@ Calculator.prototype = {
 			}
 		}
 		this.expression.answer = stack.pop();
+
+		if (stack.length != 0) {
+			this.expression.error = this.expression.ERROR_TYPE["SYNTAX_ERROR"];
+		}
 	}
 }
 

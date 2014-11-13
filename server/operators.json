@@ -31,55 +31,63 @@
 	},
 	"^" : {
 		"params" : 2,
-		"priority" : 25,
+		"priority" : 30,
 		"code" : "Math.pow(p2, p1)",
 		"description" : "exponential e.g. 5 ^ 3 = 125"
 	},
+	"NEG" : {
+		"params" : 1,
+		"priority" : 40,
+		"code" : "-p1",
+		"description" : "Set negative value",
+		"hidden" : true,
+		"alternative" : "-"
+	},
 	"ABS" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.abs(p1)",
 		"description" : "absolute value e.g. ABS(-4) = 4"
 	},
 	"SQRT" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.sqrt(p1)",
 		"description" : "square root e.g. SQRT(2) = 1.4142135623730951"
 	},
 	"SIN" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.sin(p1)",
 		"description" : "sin e.g. SIN(PI/2) = 1"
 	},
 	"COS" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.cos(p1)",
 		"description" : "cos e.g. COS(PI) = -1"
 	},
 	"TAN" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.tan(p1)",
 		"description" : "cos e.g. TAN(PI/4) = 1"
 	},
 	"LN" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.log(p1)",
 		"description" : "logarithm whose base is E e.g. LN(E) = 1"
 	},
 	"LOG" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "Math.log(p1)/Math.log(10)",
 		"description" : "logarithm whose base is 10 e.g. LOG(100) = 2"
 	},
 	"NABEATSU" : {
 		"params" : 1,
-		"priority" : 30,
+		"priority" : 50,
 		"code" : "(String(p1).indexOf(\"3\") != -1 || p1 % 3 == 0) ? Infinity : p1",
 		"description" : "when the number contains 3 or is multibles of 3, it returns Infinity"
 	}

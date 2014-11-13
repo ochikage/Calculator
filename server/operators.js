@@ -26,6 +26,14 @@ Operators.prototype = {
 		return (this.elements[op] !== undefined);
 	},
 
+	is_monadic : function(op) {
+		return (this.elements[op] instanceof Monadics);
+	},
+
+	is_dyadic: function(op) {
+		return (this.elements[op] instanceof Dyadics);
+	},
+
 	is_high_priority: function(op1, op2) {
 		return (this.elements[op1].priority >= this.elements[op2].priority);
 	},
@@ -47,8 +55,10 @@ Operators.prototype = {
 		var ret = "{";
 
 		for (key in elements) {
-			var params = (elements[key] instanceof Monadics) ? 1 : 2;
-			ret += "\"" + key + "\":{params:" + params + ", description:\"" + elements[key].description + "\"},";
+			if (!elements[key].hidden) { 
+				var params = (elements[key] instanceof Monadics) ? 1 : 2;
+				ret += "\"" + key + "\":{params:" + params + ", description:\"" + elements[key].description + "\"},";
+			}
 		}
 		ret += "}";
 
@@ -64,12 +74,16 @@ var Operator = function() {
 	this.priority = 0;
 	this.code = "";
 	this.description = "";
+	this.hidden = false;
+	this.alternative = "";
 }
 Operator.prototype = {
 	constructor : function(operator) {
 		this.priority = operator.priority;
 		this.code = operator.code;
 		this.description = operator.description;
+		this.hidden = operator.hidden;
+		this.alternative = operator.alternative;
 	}
 }
 
