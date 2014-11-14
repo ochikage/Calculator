@@ -60,19 +60,19 @@
 		"params" : 1,
 		"priority" : 50,
 		"code" : "Math.sin(p1)",
-		"description" : "sin e.g. SIN(PI/2) = 1"
+		"description" : "sine e.g. SIN(PI/2) = 1"
 	},
 	"COS" : {
 		"params" : 1,
 		"priority" : 50,
 		"code" : "Math.cos(p1)",
-		"description" : "cos e.g. COS(PI) = -1"
+		"description" : "cosine e.g. COS(PI) = -1"
 	},
 	"TAN" : {
 		"params" : 1,
 		"priority" : 50,
 		"code" : "Math.tan(p1)",
-		"description" : "cos e.g. TAN(PI/4) = 1"
+		"description" : "tangent e.g. TAN(PI/4) = 1"
 	},
 	"LN" : {
 		"params" : 1,
