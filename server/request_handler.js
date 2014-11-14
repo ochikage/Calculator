@@ -7,11 +7,17 @@ function start(query, response) {
 }
 
 function calc(query, response) {
-	var calc_facade = new CalcFacade();
-	var answer = calc_facade.execute(query["expression"]);
-	var expression_infix = calc_facade.get_formatted_infix_expression();
-	var ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_infix + "\"}";
+	var ret = "";
 
+	if (query["expression"] === undefined) {
+		ret = "Unexpected error";
+	} else {
+		var calc_facade = new CalcFacade();
+		var answer = calc_facade.execute(query["expression"]);
+		var expression_infix = calc_facade.get_formatted_infix_expression();
+
+		ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_infix + "\"}";
+	}
 	//
 	// JSON
 	//
@@ -22,16 +28,22 @@ function calc(query, response) {
 	//
 	// JSONP
 	//
-	response.writeHead(200, {"Content-Type": "application/javascript; charset=utf-8"});
+	response.writeHead(code, {"Content-Type": "application/javascript; charset=utf-8"});
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
 }
 
 function calc_rpn(query, response) {
-	var calc_facade = new CalcFacade();
-	var answer = calc_facade.calculate(query["expression"]);
-	var expression_postfix = calc_facade.get_postfix_expression();
-	var ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_postfix + "\"}";
+	var ret = "";
 
+	if (query["expression"] === undefined) {
+		ret = "Unexpected error";
+	} else {
+		var calc_facade = new CalcFacade();
+		var answer = calc_facade.calculate(query["expression"]);
+		var expression_postfix = calc_facade.get_postfix_expression();
+
+		ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_postfix + "\"}";
+	}
 	//
 	// JSONP
 	//
