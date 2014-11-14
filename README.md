@@ -6,7 +6,7 @@ Simple server/client model calculator. The server supplies RESTful APIs and the 
 
 Why Server/Client model?
 ------
-I'd like to learn Node.js in short term.
+I'd like to learn Node.js in short term. This is my first Node.js project.
 
 
 
@@ -35,7 +35,7 @@ Server information
 ### APIs
 The server supports RESTful APIs with JSONP. Therefore when you call the API, you need to prepare the callback format.
 
-Here's the example of JQuery;
+Here's an example code of JQuery;
 
     $.getJSON("http://localhost:8888/calc?callback=?", {'expression': '1 + 2'}, function(data, status) {
       if (status == "success") { 
@@ -53,7 +53,7 @@ Here's the example of JQuery;
 ##### return value
 Return values are provides as a JSON object. 
 
-    {"ansewer" : NUMBER, "expression" : "Expression String"} 
+    {ansewer : "number" , expression : "expression"} 
 
 * answer | string | The calculated result. 
 * expression | string | Formatted infix notation. Therefore, even if the user input `1+  2*3`, it shows `1 + 2 * 3`.
@@ -65,7 +65,7 @@ Return values are provides as a JSON object.
 ##### return value
 Return values are provides as a JSON object.
 
-    {"ansewer" : NUMBER, "expression" : "Expression String"} 
+    {ansewer : "number", expression : "expression"} 
 
 * answer | string | The calculated result. 
 * expression | string | Formatted infix notation. Therefore, even if the user input `1 2   3 *     +`, it shows `1 2 3 * +`.
@@ -77,7 +77,11 @@ None
 ##### return value
 Return values are provides as a JSON object. 
 
-    {"ansewer" : NUMBER, "expression" : "Expression String"}
+    OPERATOR :
+		{
+			key: "number", description : "description"
+		}
+	
 
 * key | string | The key means operator expression.
 * params | number | How many parameter the operator takes. If the operator takes 1 param, this value is 1.
@@ -119,7 +123,7 @@ Dyadic operators take 2 parameters like `2 + 3 = 5`.
 * ^: exponential
 
 
-### Add new operators
+### Adding new operators
 You can add new operators easly just edit operatos.json.
 1. Create operator object.
 2. Add "params", "priority", "code", "description".
