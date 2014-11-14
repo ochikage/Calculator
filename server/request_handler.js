@@ -1,4 +1,4 @@
-var Expression = require("./expression");
+var CalcFacade = require("./calc_facade");
 
 function start(query, response) {
 	response.writeHead(200, {"Content-Type": "text/plain"});
@@ -7,10 +7,9 @@ function start(query, response) {
 }
 
 function calc(query, response) {
-	var expression = new Expression();
-	var answer = expression.execute(query["expression"]);
-	//var expression_infix = expression.get_infix_expression();
-	var expression_infix = expression.get_formatted_infix_expression();
+	var calc_facade = new CalcFacade();
+	var answer = calc_facade.execute(query["expression"]);
+	var expression_infix = calc_facade.get_formatted_infix_expression();
 	var ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_infix + "\"}";
 
 	//
@@ -28,9 +27,9 @@ function calc(query, response) {
 }
 
 function calc_rpn(query, response) {
-	var expression = new Expression();
-	var answer = expression.calculate(query["expression"]);
-	var expression_postfix = expression.get_postfix_expression();
+	var calc_facade = new CalcFacade();
+	var answer = calc_facade.calculate(query["expression"]);
+	var expression_postfix = calc_facade.get_postfix_expression();
 	var ret = "{\"answer\": \"" + answer + "\", \"expression\":\"" + expression_postfix + "\"}";
 
 	//
@@ -43,7 +42,7 @@ function calc_rpn(query, response) {
 
 function support_op(query, response) {
 	var expression = new Expression();
-	var ret = expression.get_support_operations();
+	var ret = calc_facade.get_support_operations();
 
 	response.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);

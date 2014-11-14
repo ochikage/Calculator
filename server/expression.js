@@ -1,6 +1,4 @@
 var Operators = require("./operators.js");
-var Calculator = require("./calculator");
-var Converter = require("./converter");
 
 var Expression = function() {
 	this.infix_string = "";
@@ -16,19 +14,9 @@ var Expression = function() {
 	this.error = "";
 
 	this.operators = new Operators();
-
-	this.converter = new Converter(this);
-	this.calculator = new Calculator(this);
 }
 
 Expression.prototype = {
-	execute: function(expression_string){
-		this.infix_string = expression_string;
-		this.converter.execute();
-		this.calculator.execute();
-		
-		return (this.error == "") ? this.answer : this.error;
-	},
 
 	handle_alternative: function(elements) {
 		var ops = this.operators;
@@ -59,12 +47,6 @@ Expression.prototype = {
 				this.error = this.ERROR_TYPE["SYNTAX_ERROR"];
 			}
 		}	
-	},
-
-	calculate: function(expression_string){
-		this.postfix_string = expression_string;
-		this.calculator.execute();
-		return (this.error == "") ? this.answer : this.error;
 	},
 
 	get_infix_expression: function() {
