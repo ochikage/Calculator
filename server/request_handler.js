@@ -41,7 +41,7 @@ function calc_rpn(query, response) {
 }
 
 function support_op(query, response) {
-	var expression = new Expression();
+	var calc_facade = new CalcFacade();
 	var ret = calc_facade.get_support_operations();
 
 	response.writeHead(200, {"Content-Type": "application/json; charset=utf-8"});

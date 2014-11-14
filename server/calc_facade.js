@@ -19,7 +19,7 @@ CalcFacade.prototype = {
 	},
 
 	calculate: function(expression_string){
-		this.postfix_string = expression_string;
+		this.expression.postfix_string = expression_string;
 		this.calculator.execute();
 		return (this.expression.error == "") ? this.expression.answer : this.expression.error;
 	},
