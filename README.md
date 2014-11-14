@@ -1,13 +1,22 @@
-Calulator
+Server/Client model Calulator
 ======================
-Simple server/client model calculator.
+Simple server/client model calculator. The server supplies RESTful APIs and the client can use them easily.
 
 
-Quick use
+
+Why Server/Client model?
 ------
+I'd like to learn Node.js in short term.
+
+
+
+Quick usage 
+------
+
 
 ### Server side
 1. Run `node index.js`
+
 
 ###Client side
 1. Click the "Gear" icon to for server setting.
@@ -18,36 +27,61 @@ Quick use
 6. You can see the answer at the top of the text area.
 
 
+
 Server information
 ------
 
+
 ### APIs
-The server supports RESTful API with JSONP.
+The server supports RESTful API with JSONP. Therefore when you call the API, you need to prepare the callback format.
+
+Here's the example of JQuery;
+    $.getJSON("http://localhost:8888/calc?callback=?", {'expression': '1 + 2'}, function(data, status) {
+      if (status == "success") { 
+          var result = $("#result");
+          result.val(data["answer"] + "\n" + result.val());
+      } else {
+          alert('Cannot access the server');
+      }
+    });
 
 #### GET /calc
-* parameter: expression
-* return value: {answer: "", expression: ""}
+##### parameters
+* expression | string | infix notation. `(10.5 + 7) * -2 / 3`
 
-The parameter expression is infix notation. `(10.5 + 7) * -2 / 3`
-
-The return expression is formatted. Therefore, even if the user input `1+  2*3`, it shows `1 + 2 * 3`.
-
+##### return value
+Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+* answer | string | The calculated result. 
+* expression | string | Formatted infix notation. Therefore, even if the user input `1+  2*3`, it shows `1 + 2 * 3`.
 
 #### GET /calc_rpn
-* parameter: expression
-* return value: {answer: "", expression: ""}
+##### parameters
+* expression | string | postfix notation. (i.e. reverse polish notation) `10.5 7 + - 2 * 3 /`
 
-The expression is postfix notation (i.e. reverse polish notation). `10.5 7 + - 2 * 3 /`
-
-The return expression is formatted. Therefore, even if the user input `1 2   3 *     +`, it shows `1 2 3 * +`.
-
+##### return value
+Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+* answer | string | The calculated result. 
+* expression | string | Formatted infix notation. Therefore, even if the user input `1 2   3 *     +`, it shows `1 2 3 * +`.
 
 #### GET /support_op
-* parameter: -
-* return value: {"/":{params:2, description:"5 / 3"},"*":{params:2, description:"5 * 3"},"%":{params:2, description:"surplus e.g. 5 % 3 = 2"} ... 
+##### parameters
+None
 
-"params" means how many parameter the operator takes. "description" means how to user the operator.
+##### return value
+Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+* key | string | The key means operator expression.
+* params | number | How many parameter the operator takes. If the operator takes 1 param, this value is 1.
+* description | string| The description of the operator
 
+Here's the return value sample;
+    {
+    	"/":{
+    		params:2, description:"5 / 3"
+    	},
+    	"*":{
+    		params:2, description:"5 * 3"
+    	} 
+    }
 
 
 ### Supported operators
@@ -105,9 +139,11 @@ Here's a sample;
     },
 
 
+
 Client information
 ------
 You can designe any cliant by using the server APIs. This time, I created a HTML base simple client to show how to user the APIs.
+
 
 ### Setting dialog
 
