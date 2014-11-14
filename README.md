@@ -20,7 +20,7 @@ Quick usage
 
 ###Client side
 1. Click the "Gear" icon to for server setting.
-2. Put the server inforation in the input text like `http://localhost:8888`
+2. Put the server inforation in the input text such as `http://localhost:8888`
 3. Open index.html on a blowser.
 4. Input expression in the input text.
 5. Push enter or click "=" button.
@@ -33,9 +33,10 @@ Server information
 
 
 ### APIs
-The server supports RESTful API with JSONP. Therefore when you call the API, you need to prepare the callback format.
+The server supports RESTful APIs with JSONP. Therefore when you call the API, you need to prepare the callback format.
 
 Here's the example of JQuery;
+
     $.getJSON("http://localhost:8888/calc?callback=?", {'expression': '1 + 2'}, function(data, status) {
       if (status == "success") { 
           var result = $("#result");
@@ -50,7 +51,10 @@ Here's the example of JQuery;
 * expression | string | infix notation. `(10.5 + 7) * -2 / 3`
 
 ##### return value
-Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+Return values are provides as a JSON object. 
+
+    {"ansewer" : NUMBER, "expression" : "Expression String"} 
+
 * answer | string | The calculated result. 
 * expression | string | Formatted infix notation. Therefore, even if the user input `1+  2*3`, it shows `1 + 2 * 3`.
 
@@ -59,7 +63,10 @@ Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" 
 * expression | string | postfix notation. (i.e. reverse polish notation) `10.5 7 + - 2 * 3 /`
 
 ##### return value
-Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+Return values are provides as a JSON object.
+
+    {"ansewer" : NUMBER, "expression" : "Expression String"} 
+
 * answer | string | The calculated result. 
 * expression | string | Formatted infix notation. Therefore, even if the user input `1 2   3 *     +`, it shows `1 2 3 * +`.
 
@@ -68,12 +75,16 @@ Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" 
 None
 
 ##### return value
-Return values are provides as a JSON object. `{"ansewer" : NUMBER, "expression" : "Expression String"}` 
+Return values are provides as a JSON object. 
+
+    {"ansewer" : NUMBER, "expression" : "Expression String"}
+
 * key | string | The key means operator expression.
 * params | number | How many parameter the operator takes. If the operator takes 1 param, this value is 1.
 * description | string| The description of the operator
 
 Here's the return value sample;
+
     {
     	"/":{
     		params:2, description:"5 / 3"
@@ -86,7 +97,7 @@ Here's the return value sample;
 
 ### Supported operators
 #### Monadic operators
-Monadic operators takes 1 parameter like `ABS(-4) = 4`.
+Monadic operators take 1 parameter like `ABS(-4) = 4`.
 
 * ABS: absolute
 * SQRT: square root
@@ -98,7 +109,7 @@ Monadic operators takes 1 parameter like `ABS(-4) = 4`.
 * NABEATSU: when the number contains 3 or is multibles of 3, it returns Infinity
 
 #### Dyadic operators
-Dyadic operators takes 2 parameters like `2 + 3 = 5`.
+Dyadic operators take 2 parameters like `2 + 3 = 5`.
 
 * +: addition
 * -: substraction
