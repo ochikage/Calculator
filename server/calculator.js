@@ -37,7 +37,16 @@ Calculator.prototype = {
 
 					stack.push(ops.elements[element].run_code(p));
 				} else {
-					this.expression.error = this.expression.ERROR_TYPE["NON_SUPPORT_OP"];	
+					//
+					// Strictly speaking, parens are not operatos,
+					// but for user benefits, it shows syntax error.
+					//
+					this.expression.error = 
+						(element == '(' || element == ')') ? 
+							this.expression.ERROR_TYPE["SYNTAX_ERROR"] :
+							this.expression.ERROR_TYPE["NON_SUPPORT_OP"];
+
+					//this.expression.error = this.expression.ERROR_TYPE["NON_SUPPORT_OP"];	
 					return;
 				}
 			} else {

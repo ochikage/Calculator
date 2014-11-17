@@ -28,7 +28,7 @@ function calc(query, response) {
 	//
 	// JSONP
 	//
-	response.writeHead(code, {"Content-Type": "application/javascript; charset=utf-8"});
+	response.writeHead(200, {"Content-Type": "application/javascript; charset=utf-8"});
 	response.end(query["callback"] ? query["callback"] + "(" + ret + ")" : ret);
 }
 

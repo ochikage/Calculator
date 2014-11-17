@@ -64,7 +64,7 @@ Expression.prototype = {
 			if (ops.elements[key]["hidden"] !== undefined) {
 				var reg_exp = ops.elements[key].hidden;
 				var alternative = ops.elements[key].alternative;
-				infix = infix.replace(new RegExp(key), alternative);
+				infix = infix.replace(new RegExp(key, "g"), alternative);
 			}
 		}
 

@@ -80,6 +80,21 @@ describe('Calculator', function() {
 			calc.calculate();
 			assert.equal(calc.expression.answer, 18.3 * -9.8);
 		});
+		it('PI 2 / SIN NEG 5 * NEG', function() {
+			exp.postfix_elements = ['3.141592653589793', '2', '/', 'SIN', 'NEG', '5', '*', 'NEG'];
+			calc.calculate();
+			assert.equal(calc.expression.answer, -Math.sin(Math.PI/2)*-5);
+		});
+		it('1 3 + NEG 4 *', function() {
+			exp.postfix_elements = ['1', '3', '+', 'NEG', '4', '*'];
+			calc.calculate();
+			assert.equal(calc.expression.answer, -(1+3)*4);
+		});
+		it('3 8 + NEG 2 ^', function() {
+			exp.postfix_elements = ['3', '8', '+', 'NEG', '2', '^'];
+			calc.calculate();
+			assert.equal(calc.expression.answer,Math.pow(-(3+8), 2));
+		});
 	});
 });
 
@@ -276,5 +291,29 @@ describe('CalcFacade', function() {
 		});
 		it('-(1+3)*4', function() {
 			assert.equal(cf.execute("-(1+3)*4"), -(1+3)*4);
+		});
+});
+
+describe('Syntax error', function() {
+		it('(', function() {
+			assert.equal(cf.execute("("), "Syntax error");
+		});
+		it(')', function() {
+			assert.equal(cf.execute(")"), "Syntax error");
+		});
+		it('1 2', function() {
+			assert.equal(cf.execute("1 2"), "Syntax error");
+		});
+		it('3 log(10)', function() {
+			assert.equal(cf.execute("3 log(10)"), "Syntax error");
+		});
+});
+
+describe('Non supported operator', function() {
+		it('&', function() {
+			assert.equal(cf.execute("&"), "Non supported operator");
+		});
+		it('4 # sin(pi/4)', function() {
+			assert.equal(cf.execute("4 # sin(pi/4)"), "Non supported operator");
 		});
 });

@@ -12,7 +12,7 @@ $(function(){
 	// Change appearance
 	//
 	var change_expression_color = function() {
-		if (localStorage["rpn_mode"] == "true") {
+		if (localStorage["rpn_mode"]== "true") {
 			$("input[name='expression']").css("background-color", "yellow");
 		} else {
 			$("input[name='expression']").css("background-color", "white");
